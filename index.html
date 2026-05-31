@@ -551,7 +551,7 @@ COURSES.forEach((c,i)=>{
 const home = document.getElementById('home');
 const storyView = document.getElementById('storyView');
 
-function openStory(id){
+function renderStory(id){
   const c = COURSES.find(x=>x.id===id);
   document.documentElement.style.setProperty('--c',c.color);
   document.documentElement.style.setProperty('--soft',c.soft);
@@ -622,12 +622,36 @@ function openStory(id){
   setTimeout(()=>{const f=storyView.querySelector('.step');if(f)f.classList.add('open');},250);
 }
 
-function goHome(){
+function showHome(){
   storyView.classList.remove('active');
   storyView.innerHTML='';
   home.style.display='block';
   window.scrollTo(0,0);
 }
+
+/* 카드 클릭: 브라우저 히스토리에 한 단계를 쌓아,
+   트랙패드 뒤로가기 제스처가 탭을 닫지 않고 메인으로 돌아오게 함 */
+function openStory(id){
+  history.pushState({view:'story',id:id},'');
+  renderStory(id);
+}
+
+/* 화면 안의 '돌아가기' 버튼: 브라우저 뒤로가기와 동일하게 동작 */
+function goHome(){
+  history.back();
+}
+
+/* 트랙패드 스와이프 / 뒤로·앞으로 버튼 처리 */
+window.addEventListener('popstate',function(e){
+  if(e.state && e.state.view==='story'){
+    renderStory(e.state.id);
+  }else{
+    showHome();
+  }
+});
+
+/* 첫 진입 상태를 메인 화면으로 기록 (히스토리 출발점) */
+history.replaceState({view:'home'},'');
 </script>
 </body>
 </html>
