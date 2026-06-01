@@ -3,256 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 캠퍼스 모험 이야기</title>
+<title>KANT · AI Native 학습 여정</title>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
 <style>
   :root{
-    --ink:#1a1730;
-    --cream:#fff7ec;
-    --paper:#fffdf8;
-    --shadow:rgba(26,23,48,.18);
+    --gs-000:#FFFFFF; --gs-050:#F7F7F7; --gs-100:#EBEBEB; --gs-200:#D4D4D4;
+    --gs-300:#B8B8B8; --gs-400:#9A9A9A; --gs-500:#737373; --gs-600:#5C5C5C;
+    --gs-700:#363636; --gs-800:#1F1F1F; --gs-900:#0D0D0D; --gs-950:#000000;
     --font:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    --dot: rgba(255,255,255,.28);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html{scroll-behavior:smooth;}
   body{
     font-family:var(--font);
-    background:var(--cream);
-    color:var(--ink);
-    overflow-x:hidden;
-    line-height:1.65;
+    background:var(--gs-000);
+    color:var(--gs-700);
+    line-height:1.6;
     font-weight:500;
     -webkit-font-smoothing:antialiased;
+    letter-spacing:-0.2px;
   }
 
-  /* ====== 떠다니는 배경 도형 ====== */
-  .bg-deco{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-  .blob{position:absolute;border-radius:42% 58% 60% 40% / 45% 45% 55% 55%;opacity:.32;filter:blur(2px);}
-  .b1{width:280px;height:280px;background:#ffd36b;top:-60px;left:-60px;animation:float1 14s ease-in-out infinite;}
-  .b2{width:220px;height:220px;background:#9be3c4;bottom:-40px;right:-40px;animation:float2 16s ease-in-out infinite;}
-  .b3{width:160px;height:160px;background:#ffb3c7;top:40%;right:8%;animation:float1 12s ease-in-out infinite;}
-  @keyframes float1{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-30px) rotate(12deg)}}
-  @keyframes float2{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(26px) rotate(-10deg)}}
-
-  /* ====== 공통 래퍼 ====== */
-  .wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:0 18px;}
-
-  /* ====== 인트로 ====== */
-  header.hero{text-align:center;padding:60px 18px 30px;position:relative;z-index:1;}
-  .badge{
-    display:inline-block;background:var(--ink);color:#fff;
-    font-size:.95rem;padding:7px 18px;border-radius:30px;margin-bottom:18px;
-    letter-spacing:.3px;font-weight:600;
+  /* ===== 디더링(도트) 텍스처 — KANT 시그니처 ===== */
+  .dither-dark{
+    background-color:var(--gs-950);
+    background-image:radial-gradient(var(--dot) 1px, transparent 1.5px);
+    background-size:5px 5px;
   }
-  .hero h1{
-    font-size:clamp(2.2rem,7.5vw,3.8rem);
-    line-height:1.15;letter-spacing:-1.2px;font-weight:800;
-  }
-  .hero h1 .pop{color:#e8344e;display:inline-block;animation:wiggle 3s ease-in-out infinite;}
-  @keyframes wiggle{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
-  .hero p{font-size:clamp(1rem,3.2vw,1.25rem);margin-top:16px;color:#5a5470;font-weight:500;}
-  .hint{
-    margin-top:26px;font-size:1.05rem;color:#9b93b0;font-weight:600;
-  }
-  .hint .arrow{display:inline-block;animation:bounce 1.6s infinite;}
-  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
-  /* ====== 과정 카드 그리드 ====== */
+  /* ===== 공통 ===== */
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+    color:var(--gs-500);
+  }
+
+  /* ===== 히어로 ===== */
+  header.hero{
+    position:relative;overflow:hidden;
+    color:var(--gs-000);
+    padding:88px 24px 80px;
+  }
+  header.hero::after{
+    content:"";position:absolute;inset:0;
+    background-image:radial-gradient(var(--dot) 1px, transparent 1.5px);
+    background-size:6px 6px;
+    -webkit-mask-image:linear-gradient(120deg,#000 0%,transparent 58%);
+    mask-image:linear-gradient(120deg,#000 0%,transparent 58%);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto;}
+  .hero .kant-mark{
+    font-weight:800;font-size:15px;letter-spacing:4px;color:var(--gs-000);
+    padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.25);margin-bottom:40px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+  }
+  .hero .kant-mark span{font-weight:500;letter-spacing:1px;color:var(--gs-400);font-size:12px;}
+  .hero .display{
+    font-weight:800;font-size:clamp(48px,9vw,104px);line-height:0.98;
+    letter-spacing:-3px;color:var(--gs-000);
+  }
+  .hero .ko{
+    margin-top:24px;font-size:clamp(18px,3vw,24px);font-weight:600;color:var(--gs-200);
+    letter-spacing:-0.5px;line-height:1.5;
+  }
+  .hero .lead{
+    margin-top:20px;font-size:clamp(15px,2.2vw,17px);color:var(--gs-400);max-width:560px;
+    font-weight:500;line-height:1.7;
+  }
+
+  /* ===== 과정 인덱스 ===== */
+  .index-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    padding:64px 0 24px;border-bottom:1px solid var(--gs-950);
+  }
+  .index-head h2{font-size:clamp(20px,3vw,26px);font-weight:800;color:var(--gs-950);letter-spacing:-0.8px;}
+  .index-head .count{font-size:13px;font-weight:600;color:var(--gs-500);letter-spacing:1px;}
+
   .grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:22px;padding:30px 0 60px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    border-left:1px solid var(--gs-200);border-top:1px solid var(--gs-200);
   }
   .card{
-    background:var(--paper);border-radius:26px;padding:28px 24px;cursor:pointer;
-    border:3px solid var(--ink);
-    box-shadow:7px 8px 0 var(--ink);
-    transition:transform .18s ease,box-shadow .18s ease;
-    position:relative;overflow:hidden;
+    position:relative;cursor:pointer;background:var(--gs-000);
+    border-right:1px solid var(--gs-200);border-bottom:1px solid var(--gs-200);
+    padding:32px 28px 28px;min-height:248px;
+    display:flex;flex-direction:column;
+    transition:background .2s ease,color .2s ease;
   }
-  .card::before{
-    content:"";position:absolute;top:0;left:0;right:0;height:10px;background:var(--c);
+  .card:hover,.card:focus-visible{background:var(--gs-950);color:var(--gs-000);outline:none;}
+  .card .c-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto;}
+  .card .num{
+    font-size:46px;font-weight:800;line-height:1;letter-spacing:-2px;color:var(--gs-950);
+    transition:color .2s ease;
   }
-  .card:hover,.card:focus-visible{transform:translate(-3px,-3px);box-shadow:11px 13px 0 var(--ink);outline:none;}
-  .card:active{transform:translate(2px,3px);box-shadow:4px 4px 0 var(--ink);}
-  .card .emoji{font-size:3.4rem;display:block;margin-bottom:6px;line-height:1;}
-  .card .role{
-    display:inline-block;background:var(--c);color:#fff;font-size:.85rem;
-    padding:4px 12px;border-radius:20px;margin-bottom:10px;font-weight:700;
+  .card:hover .num,.card:focus-visible .num{color:var(--gs-000);}
+  .card .chip{
+    width:46px;height:46px;flex:none;
+    background-image:radial-gradient(var(--gs-950) 1px,transparent 1.4px);
+    background-size:5px 5px;
+    transition:opacity .2s ease;
   }
-  .card h2{font-size:1.4rem;margin-bottom:4px;font-weight:800;letter-spacing:-.5px;}
-  .card .eng{color:#9b93b0;font-size:.92rem;margin-bottom:12px;font-weight:600;}
-  .card .blurb{font-size:1rem;color:#4d4763;font-weight:500;}
-  .card .go{
-    margin-top:16px;font-weight:700;color:var(--c);font-size:1.02rem;
-    display:flex;align-items:center;gap:6px;
+  .card:hover .chip,.card:focus-visible .chip{
+    background-image:radial-gradient(var(--gs-000) 1px,transparent 1.4px);
   }
-  .card .go span{transition:transform .2s;}
-  .card:hover .go span{transform:translateX(6px);}
+  .card .role{margin-top:28px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gs-500);transition:color .2s ease;}
+  .card:hover .role,.card:focus-visible .role{color:var(--gs-400);}
+  .card h3{margin-top:10px;font-size:22px;font-weight:800;letter-spacing:-0.8px;color:var(--gs-950);transition:color .2s ease;}
+  .card:hover h3,.card:focus-visible h3{color:var(--gs-000);}
+  .card .eng{margin-top:4px;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gs-400);}
+  .card .blurb{margin-top:16px;font-size:14px;line-height:1.6;color:var(--gs-600);transition:color .2s ease;}
+  .card:hover .blurb,.card:focus-visible .blurb{color:var(--gs-300);}
+  .card .go{margin-top:18px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gs-950);transition:color .2s ease;}
+  .card:hover .go,.card:focus-visible .go{color:var(--gs-000);}
 
-  /* ====== 상세(스토리) 화면 ====== */
-  .story{
-    display:none;position:relative;z-index:1;min-height:100vh;
-    padding-bottom:90px;animation:fadeUp .45s ease;
-  }
-  .story.active{display:block;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .src-note{padding:32px 0 8px;font-size:12px;color:var(--gs-400);line-height:1.6;}
+  footer{padding:24px 0 64px;font-size:12px;color:var(--gs-400);letter-spacing:0.5px;}
+
+  /* ===== 스토리 화면 ===== */
+  .story{display:none;}
+  .story.active{display:block;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
 
   .topbar{
-    position:sticky;top:0;z-index:5;backdrop-filter:blur(6px);
-    background:color-mix(in srgb,var(--cream) 80%,transparent);
-    padding:14px 18px;display:flex;align-items:center;gap:12px;
-    border-bottom:2px dashed #d8d0c0;
+    position:sticky;top:0;z-index:10;background:var(--gs-000);
+    border-bottom:1px solid var(--gs-950);
+    display:flex;align-items:center;gap:16px;padding:16px 24px;
   }
   .back{
-    background:var(--ink);color:#fff;border:none;cursor:pointer;
-    font-family:var(--font);font-size:.98rem;font-weight:600;
-    padding:9px 18px;border-radius:30px;
-    display:flex;align-items:center;gap:6px;transition:transform .15s;
+    background:none;border:none;cursor:pointer;font-family:var(--font);
+    font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--gs-950);display:flex;align-items:center;gap:8px;padding:4px 0;
   }
-  .back:hover{transform:translateX(-4px);}
-  .topbar .tname{font-weight:700;font-size:1.02rem;}
+  .back:hover{color:var(--gs-500);}
+  .topbar .tname{font-size:13px;font-weight:700;letter-spacing:0.5px;color:var(--gs-950);}
+  .topbar .tname b{color:var(--gs-400);font-weight:600;margin-right:8px;}
 
-  .story-hero{text-align:center;padding:46px 18px 10px;}
-  .story-hero .bigemoji{
-    font-size:5.5rem;display:inline-block;animation:hop 2.4s ease-in-out infinite;
-    filter:drop-shadow(4px 6px 0 var(--shadow));
+  .s-hero{position:relative;overflow:hidden;color:var(--gs-000);padding:72px 24px 64px;}
+  .s-hero::after{
+    content:"";position:absolute;inset:0;
+    background-image:radial-gradient(var(--dot) 1px,transparent 1.5px);
+    background-size:6px 6px;
+    -webkit-mask-image:linear-gradient(125deg,#000 0%,transparent 60%);
+    mask-image:linear-gradient(125deg,#000 0%,transparent 60%);
+    pointer-events:none;
   }
-  @keyframes hop{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
-  .story-hero .role{
-    display:inline-block;background:var(--c);color:#fff;padding:5px 16px;
-    border-radius:24px;font-size:.95rem;margin:14px 0 6px;font-weight:700;
-  }
-  .story-hero h2{font-size:clamp(1.9rem,6.5vw,2.8rem);font-weight:800;letter-spacing:-1px;}
-  .story-hero .sub{color:#9b93b0;font-size:1rem;font-weight:600;}
+  .s-hero-inner{position:relative;z-index:1;max-width:1080px;margin:0 auto;}
+  .s-hero .num{font-size:15px;font-weight:800;letter-spacing:3px;color:var(--gs-400);}
+  .s-hero .role{margin-top:20px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gs-300);}
+  .s-hero h2{margin-top:12px;font-size:clamp(30px,6vw,52px);font-weight:800;letter-spacing:-1.5px;color:var(--gs-000);line-height:1.05;}
+  .s-hero .eng{margin-top:10px;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gs-500);}
 
   .intro-box{
-    background:var(--paper);border:3px solid var(--ink);border-radius:22px;
-    padding:26px 24px;margin:24px 0;box-shadow:6px 7px 0 var(--ink);font-size:1.1rem;
-    position:relative;font-weight:500;line-height:1.75;
+    background:var(--gs-050);border:1px solid var(--gs-200);
+    border-left:3px solid var(--gs-950);
+    padding:28px 28px;margin:40px 0;font-size:16px;line-height:1.8;color:var(--gs-700);
   }
-  .intro-box .tag{
-    position:absolute;top:-14px;left:20px;background:var(--c);color:#fff;
-    padding:3px 14px;border-radius:16px;font-size:.85rem;font-weight:700;
-  }
-  .intro-box b{color:var(--c);font-weight:700;}
+  .intro-box b{color:var(--gs-950);font-weight:700;}
 
-  /* ====== 여정(타임라인) ====== */
-  .journey-title{
-    text-align:center;font-size:1.6rem;margin:40px 0 10px;font-weight:800;letter-spacing:-.5px;
+  .journey-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    padding:8px 0 0;border-bottom:1px solid var(--gs-950);margin-bottom:0;
   }
-  .journey-title small{display:block;color:#9b93b0;font-size:.98rem;font-weight:500;margin-top:4px;}
+  .journey-head h3{font-size:20px;font-weight:800;letter-spacing:-0.5px;color:var(--gs-950);padding-bottom:16px;}
+  .journey-head .hint{font-size:12px;color:var(--gs-500);padding-bottom:18px;letter-spacing:0.3px;}
 
-  .step{
-    background:var(--paper);border:3px solid var(--ink);border-radius:22px;
-    margin:18px 0;overflow:hidden;box-shadow:5px 6px 0 var(--ink);
-  }
-  .step-head{
-    display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer;
-    user-select:none;
-  }
-  .step-num{
-    flex:none;width:46px;height:46px;border-radius:50%;background:var(--c);
-    color:#fff;display:flex;align-items:center;justify-content:center;
-    font-size:1.25rem;font-weight:800;box-shadow:2px 3px 0 var(--ink);
-  }
-  .step-head .st-emoji{font-size:1.8rem;flex:none;}
+  .step{border-bottom:1px solid var(--gs-200);}
+  .step-head{display:flex;align-items:center;gap:20px;padding:24px 4px;cursor:pointer;user-select:none;}
+  .step-num{font-size:15px;font-weight:800;letter-spacing:1px;color:var(--gs-400);flex:none;width:30px;}
   .step-head .st-title{flex:1;}
-  .step-head .st-title strong{font-size:1.18rem;display:block;font-weight:700;letter-spacing:-.3px;}
-  .step-head .st-title em{font-style:normal;color:#9b93b0;font-size:.9rem;font-weight:600;}
-  .step-head .chev{flex:none;font-size:1.4rem;color:var(--c);transition:transform .25s;}
-  .step.open .chev{transform:rotate(180deg);}
+  .step-head .st-title strong{display:block;font-size:18px;font-weight:700;letter-spacing:-0.5px;color:var(--gs-950);}
+  .step-head .st-title em{font-style:normal;font-size:12px;font-weight:600;letter-spacing:0.5px;color:var(--gs-500);}
+  .step-head .toggle{flex:none;font-size:22px;font-weight:400;color:var(--gs-950);line-height:1;transition:transform .25s ease;}
+  .step.open .toggle{transform:rotate(45deg);}
 
-  .step-body{
-    max-height:0;overflow:hidden;transition:max-height .45s ease;
-    padding:0 20px;
-  }
-  .step.open .step-body{max-height:1400px;padding-bottom:22px;}
-  .step-body .story-line{
-    font-size:1.08rem;margin-bottom:14px;padding-top:6px;font-weight:500;line-height:1.75;
-  }
-  .learn{
-    background:var(--soft);border-radius:16px;padding:15px 17px;
-    font-size:1.02rem;font-weight:500;
-  }
-  .learn .lh{display:flex;align-items:center;gap:6px;color:var(--c);margin-bottom:6px;font-weight:700;}
+  .step-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+  .step.open .step-body{max-height:1600px;}
+  .step-body-inner{padding:0 0 28px 50px;}
+  @media(max-width:560px){.step-body-inner{padding-left:0;}}
+  .story-line{font-size:16px;line-height:1.8;color:var(--gs-700);margin-bottom:20px;}
+
+  .learn{border-top:1px solid var(--gs-200);padding-top:16px;margin-bottom:16px;}
+  .learn .lh{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gs-950);margin-bottom:10px;}
   .learn ul{list-style:none;}
-  .learn li{padding:3px 0 3px 22px;position:relative;}
-  .learn li::before{content:"⭐";position:absolute;left:0;font-size:.85rem;}
+  .learn li{font-size:15px;color:var(--gs-700);padding:5px 0 5px 18px;position:relative;}
+  .learn li::before{content:"";position:absolute;left:0;top:13px;width:5px;height:5px;background:var(--gs-950);}
 
-  /* ====== 원본 출처 박스 ====== */
-  .source{
-    margin-top:14px;border:2px dashed #c9c0b0;border-radius:16px;
-    padding:14px 16px;background:#fbf6ee;
-  }
-  .source .sh{
-    display:flex;align-items:center;gap:6px;color:#8a8273;
-    font-size:.9rem;margin-bottom:8px;font-weight:700;
-  }
+  .source{background:var(--gs-050);border:1px solid var(--gs-200);padding:18px 20px;}
+  .source .sh{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gs-500);margin-bottom:12px;}
   .source ul{list-style:none;}
-  .source li{
-    padding:8px 0;border-top:1px solid #ece4d6;font-size:.94rem;color:#5a5345;
-    line-height:1.5;font-weight:500;
-  }
+  .source li{padding:10px 0;border-top:1px solid var(--gs-200);font-size:14px;color:var(--gs-600);line-height:1.55;}
   .source li:first-child{border-top:none;}
-  .source li .subj{color:var(--c);font-weight:700;}
-  .source li .hrs{
-    display:inline-block;background:#ece4d6;color:#7a7060;border-radius:10px;
-    padding:1px 8px;font-size:.78rem;margin-left:4px;font-weight:600;
-  }
-  .source li .det{display:block;color:#857c6c;font-size:.89rem;margin-top:2px;font-weight:400;}
+  .source li .subj{color:var(--gs-950);font-weight:700;}
+  .source li .hrs{display:inline-block;border:1px solid var(--gs-300);color:var(--gs-500);padding:0 7px;font-size:11px;margin-left:6px;font-weight:600;letter-spacing:0.5px;}
+  .source li .det{display:block;color:var(--gs-500);font-size:13px;margin-top:3px;line-height:1.5;}
 
-  /* ====== 엔딩 ====== */
-  .ending{
-    background:var(--ink);color:var(--cream);border-radius:24px;
-    padding:34px 26px;margin:40px 0 20px;text-align:center;
-    box-shadow:7px 8px 0 var(--c);
-  }
-  .ending .crown{font-size:3rem;}
-  .ending h3{font-size:1.6rem;margin:10px 0;font-weight:800;}
-  .ending p{font-size:1.06rem;color:#d8d2e8;font-weight:500;}
-  .ending b{font-weight:700;color:#fff;}
+  .ending{position:relative;overflow:hidden;color:var(--gs-000);padding:56px 32px;margin:48px 0 0;text-align:center;}
+  .ending::after{content:"";position:absolute;inset:0;background-image:radial-gradient(var(--dot) 1px,transparent 1.5px);background-size:6px 6px;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0%,transparent 70%);mask-image:radial-gradient(circle at 50% 50%,#000 0%,transparent 70%);pointer-events:none;}
+  .ending-inner{position:relative;z-index:1;}
+  .ending .lbl{font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gs-400);}
+  .ending h4{margin:14px 0;font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--gs-000);}
+  .ending p{font-size:15px;color:var(--gs-300);line-height:1.7;}
+  .ending b{color:var(--gs-000);font-weight:700;}
 
-  footer{text-align:center;padding:30px 18px 50px;color:#a89f8d;font-weight:600;font-size:.95rem;}
-  .src-note{max-width:980px;margin:0 auto;padding:0 18px 26px;text-align:center;color:#b3aa98;font-weight:500;font-size:.92rem;line-height:1.6;}
-
-  @media(max-width:520px){
-    .card .emoji{font-size:2.8rem;}
-    .story-hero .bigemoji{font-size:4.4rem;}
-  }
+  .story-foot{padding:28px 0 64px;font-size:12px;color:var(--gs-400);letter-spacing:0.5px;}
 </style>
 </head>
 <body>
 
-<div class="bg-deco">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-</div>
-
-<!-- ============ 메인 화면 ============ -->
 <main id="home">
-  <header class="hero">
-    <span class="badge">팀스파르타 AI 캠퍼스</span>
-    <h1>AI 모험가가<br>되는 <span class="pop">5가지 길</span></h1>
-    <p>AI를 다루는 다섯 명의 주인공이 있어요.<br>누가 무엇을 배우는지 함께 따라가 볼까요?</p>
-    <div class="hint"><span class="arrow">👇</span> 궁금한 주인공을 눌러보세요</div>
+  <header class="hero dither-dark">
+    <div class="hero-inner">
+      <div class="kant-mark">KANT<span>Korea AI Native Technologists</span></div>
+      <div class="eyebrow" style="color:var(--gs-400)">SPARTACLUB AI CAMPUS · LEARNING JOURNEY</div>
+      <h1 class="display">FIVE PATHS<br>TO AI NATIVE</h1>
+      <p class="ko">AI를 다루는 다섯 직무, 다섯 갈래의 성장 여정.<br>각 과정이 무엇을 배우고 어디로 향하는지 따라가 봅니다.</p>
+      <p class="lead">데이터를 읽는 사람부터 로봇을 움직이는 사람까지 — KANT가 양성하는 AI Native의 다섯 가지 정의.</p>
+    </div>
   </header>
 
   <div class="wrap">
+    <div class="index-head">
+      <h2>과정 인덱스</h2>
+      <div class="count">05 PROGRAMS</div>
+    </div>
     <div class="grid" id="cardGrid"></div>
+    <p class="src-note">각 단계의 설명은 「2026 KDT AI Campus 훈련과정 개요서」의 교과 내용을 출처로 함께 표기합니다.</p>
+    <footer>© 2026 TEAMSPARTA · KANT Brand System</footer>
   </div>
-
-  <p class="src-note">※ 각 단계의 쉬운 이야기 아래에는 「2026 KDT AI Campus 훈련과정 개요서」의 실제 교과 내용을 출처로 함께 적어두었어요.</p>
-  <footer>모든 과정은 1516시간 동안 천천히, 끝까지 함께 가요 🐢</footer>
 </main>
 
-<!-- ============ 스토리 화면 (JS로 채움) ============ -->
 <section class="story" id="storyView"></section>
 
 <script>
-/* =========================================================
-   데이터: 5개 과정의 캐릭터, 비유, 단계별 스토리 + 원본 출처
-   ========================================================= */
 const COURSES = [
   {
     id:"ds",
@@ -522,104 +506,99 @@ const COURSES = [
     ]
   }
 ];
-
-/* =========================================================
-   카드 렌더링
-   ========================================================= */
+/* ===== 카드 렌더링 ===== */
 const grid = document.getElementById('cardGrid');
 COURSES.forEach((c,i)=>{
   const el = document.createElement('div');
   el.className='card';
   el.tabIndex=0;
-  el.style.setProperty('--c',c.color);
-  el.style.animationDelay=(i*.06)+'s';
+  const no = String(i+1).padStart(2,'0');
   el.innerHTML=`
-    <span class="emoji">${c.emoji}</span>
-    <span class="role">${c.role}</span>
-    <h2>${c.name}</h2>
+    <div class="c-top">
+      <div class="num">${no}</div>
+      <div class="chip"></div>
+    </div>
+    <div class="role">${c.role}</div>
+    <h3>${c.name}</h3>
     <div class="eng">${c.eng}</div>
     <p class="blurb">${c.blurb}</p>
-    <div class="go">이야기 보러가기 <span>→</span></div>`;
+    <div class="go">View Journey →</div>`;
   el.addEventListener('click',()=>openStory(c.id));
   el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openStory(c.id);}});
   grid.appendChild(el);
 });
 
-/* =========================================================
-   스토리 화면 열기
-   ========================================================= */
+/* ===== 스토리 렌더링 ===== */
 const home = document.getElementById('home');
 const storyView = document.getElementById('storyView');
 
 function renderStory(id){
-  const c = COURSES.find(x=>x.id===id);
-  document.documentElement.style.setProperty('--c',c.color);
-  document.documentElement.style.setProperty('--soft',c.soft);
+  const idx = COURSES.findIndex(x=>x.id===id);
+  const c = COURSES[idx];
+  const no = String(idx+1).padStart(2,'0');
 
   let stepsHTML='';
-  c.steps.forEach((s,idx)=>{
+  c.steps.forEach((s,si)=>{
+    const sno = String(si+1).padStart(2,'0');
     const srcList = s.source.map(o=>
       `<li><span class="subj">${o.s}</span><span class="hrs">${o.h}</span><span class="det">${o.d}</span></li>`
     ).join('');
     stepsHTML+=`
-      <div class="step" style="--c:${c.color};--soft:${c.soft}">
+      <div class="step">
         <div class="step-head" onclick="this.parentNode.classList.toggle('open')">
-          <div class="step-num">${idx+1}</div>
-          <div class="st-emoji">${s.emoji}</div>
+          <div class="step-num">${sno}</div>
           <div class="st-title"><strong>${s.title}</strong><em>${s.eng}</em></div>
-          <div class="chev">▾</div>
+          <div class="toggle">+</div>
         </div>
         <div class="step-body">
-          <p class="story-line">${s.story}</p>
-          <div class="learn">
-            <div class="lh">🎒 이때 배우는 것</div>
-            <ul>${s.learn.map(l=>`<li>${l}</li>`).join('')}</ul>
-          </div>
-          <div class="source">
-            <div class="sh">📄 원본 출처 — 개요서 「4. 교과과정 상세」</div>
-            <ul>${srcList}</ul>
+          <div class="step-body-inner">
+            <p class="story-line">${s.story}</p>
+            <div class="learn">
+              <div class="lh">이때 배우는 것</div>
+              <ul>${s.learn.map(l=>`<li>${l}</li>`).join('')}</ul>
+            </div>
+            <div class="source">
+              <div class="sh">원본 출처 · 개요서 「4. 교과과정 상세」</div>
+              <ul>${srcList}</ul>
+            </div>
           </div>
         </div>
       </div>`;
   });
 
   storyView.innerHTML=`
-    <div class="topbar" style="--c:${c.color}">
-      <button class="back" onclick="goHome()">← 돌아가기</button>
-      <span class="tname">${c.emoji} ${c.name}</span>
+    <div class="topbar">
+      <button class="back" onclick="goHome()">← Index</button>
+      <span class="tname"><b>${no}</b>${c.name}</span>
+    </div>
+    <div class="s-hero dither-dark">
+      <div class="s-hero-inner">
+        <div class="num">PROGRAM ${no}</div>
+        <div class="role">${c.role}</div>
+        <h2>${c.name}</h2>
+        <div class="eng">${c.eng}</div>
+      </div>
     </div>
     <div class="wrap">
-      <div class="story-hero" style="--c:${c.color}">
-        <span class="bigemoji">${c.emoji}</span>
-        <div><span class="role">${c.role}</span></div>
-        <h2>${c.name}</h2>
-        <div class="sub">${c.eng}</div>
+      <div class="intro-box">${c.intro}</div>
+      <div class="journey-head">
+        <h3>5단계 성장 여정</h3>
+        <span class="hint">각 단계를 눌러 펼쳐보세요</span>
       </div>
-
-      <div class="intro-box" style="--c:${c.color}">
-        <span class="tag">이 친구는?</span>
-        ${c.intro}
-      </div>
-
-      <div class="journey-title" style="--c:${c.color}">
-        5단계 성장 모험 🗺️
-        <small>각 단계를 눌러 이야기와 원본 교과 출처를 펼쳐보세요</small>
-      </div>
-
       ${stepsHTML}
-
-      <div class="ending" style="--c:${c.color}">
-        <div class="crown">🎓</div>
-        <h3>모험 완성!</h3>
-        <p>다섯 단계를 모두 거치면, 우리 주인공은<br>진짜 <b>${c.name}</b>가 되어 세상으로 나아가요!</p>
+      <div class="ending dither-dark">
+        <div class="ending-inner">
+          <div class="lbl">Completion</div>
+          <h4>여정 완료</h4>
+          <p>다섯 단계를 모두 통과하면,<br><b>${c.name}</b>로서 현장으로 나아갑니다.</p>
+        </div>
       </div>
-    </div>
-    <footer>다른 주인공도 만나볼까요? 위의 돌아가기를 눌러보세요 ✨</footer>`;
+      <p class="story-foot">← Index 로 돌아가 다른 과정을 살펴볼 수 있습니다.</p>
+    </div>`;
 
   home.style.display='none';
   storyView.classList.add('active');
   window.scrollTo(0,0);
-  setTimeout(()=>{const f=storyView.querySelector('.step');if(f)f.classList.add('open');},250);
 }
 
 function showHome(){
@@ -629,28 +608,21 @@ function showHome(){
   window.scrollTo(0,0);
 }
 
-/* 카드 클릭: 브라우저 히스토리에 한 단계를 쌓아,
-   트랙패드 뒤로가기 제스처가 탭을 닫지 않고 메인으로 돌아오게 함 */
+/* 카드 클릭: 히스토리에 단계를 쌓아 트랙패드 뒤로가기가 탭을 닫지 않고 인덱스로 돌아오게 함 */
 function openStory(id){
   history.pushState({view:'story',id:id},'');
   renderStory(id);
 }
-
-/* 화면 안의 '돌아가기' 버튼: 브라우저 뒤로가기와 동일하게 동작 */
+/* 화면 내 'Index' 버튼: 브라우저 뒤로가기와 동일 동작 */
 function goHome(){
   history.back();
 }
-
-/* 트랙패드 스와이프 / 뒤로·앞으로 버튼 처리 */
+/* 트랙패드 스와이프 / 뒤로·앞으로 버튼 */
 window.addEventListener('popstate',function(e){
-  if(e.state && e.state.view==='story'){
-    renderStory(e.state.id);
-  }else{
-    showHome();
-  }
+  if(e.state && e.state.view==='story'){ renderStory(e.state.id); }
+  else{ showHome(); }
 });
-
-/* 첫 진입 상태를 메인 화면으로 기록 (히스토리 출발점) */
+/* 첫 진입 상태를 인덱스로 기록 */
 history.replaceState({view:'home'},'');
 </script>
 </body>
